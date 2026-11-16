@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forms & Sheets Masterclass — Google Workspace Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#122031;
+  --ink-soft:#3d4f63;
+  --paper:#f5f6f4;
+  --panel:#ffffff;
+  --line:#dde2e2;
+  --teal:#0e7c6b;
+  --teal-deep:#0a5c4f;
+  --teal-tint:#e2f2ee;
+  --amber:#c97a1a;
+  --amber-tint:#fbeed9;
+  --coral:#b3492f;
+  --coral-tint:#f8e5df;
+  --slate-tint:#eef0ef;
+  --purple:#673ab7;
+  --purple-tint:#f0ebf8;
+  --radius-sm:4px;
+  --radius-md:8px;
+  --shadow-card:0 1px 0 rgba(18,32,49,0.06), 0 8px 20px -14px rgba(18,32,49,0.35);
+  --focus:0 0 0 3px rgba(14,124,107,0.35);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'IBM Plex Sans',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-weight:600;
+  line-height:1.15;
+  margin:0;
+  color:var(--ink);
+}
+p{margin:0 0 0.75em 0;}
+a{color:var(--teal-deep);}
+button{font-family:inherit;}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:var(--radius-sm);}
+img{max-width:100%;}
+
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:100;border-radius:var(--radius-sm);}
+.skip-link:focus{left:12px;top:12px;}
+
+/* ---- App shell ---- */
+#app{min-height:100vh;display:flex;flex-direction:column;}
+
+.topbar{
+  background:var(--ink);
+  color:#fff;
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:1.05rem;
+  color:#fff;text-decoration:none;
+  margin-right:auto;
+  cursor:pointer;
+}
+.brand-mark{
+  width:30px;height:30px;border-radius:7px;
+  background:linear-gradient(135deg,var(--purple) 0%, var(--teal-deep) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.topnav{display:flex;gap:4px;flex-wrap:wrap;}
+.topnav button{
+  background:transparent;border:1px solid transparent;color:#cfe0dc;
+  padding:7px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:0.92rem;
+}
+.topnav button:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.topnav button.active{background:rgba(255,255,255,0.14);color:#fff;border-color:rgba(255,255,255,0.2);}
+.role-pill{
+  display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:3px;gap:2px;
+}
+.role-pill button{
+  border-radius:999px;padding:6px 14px;font-size:0.85rem;background:transparent;color:#cfe0dc;border:none;cursor:pointer;
+}
+.role-pill button.active{background:#fff;color:var(--ink);font-weight:600;}
+
+main{flex:1;width:100%;max-width:1040px;margin:0 auto;padding:28px 20px 64px;}
+.container-wide{max-width:1220px;}
+
+/* ---- Buttons ---- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;border-radius:var(--radius-sm);
+  font-size:0.95rem;font-weight:600;cursor:pointer;border:1.5px solid transparent;
+  font-family:'IBM Plex Sans',sans-serif;
+}
+.btn-primary{background:var(--teal);color:#fff;}
+.btn-primary:hover{background:var(--teal-deep);}
+.btn-secondary{background:#fff;color:var(--ink);border-color:var(--line);}
+.btn-secondary:hover{border-color:var(--ink-soft);}
+.btn-ghost{background:transparent;color:var(--teal-deep);border-color:transparent;padding-left:0;padding-right:0;}
+.btn-ghost:hover{text-decoration:underline;}
+.btn-danger{background:#fff;color:var(--coral);border-color:var(--coral);}
+.btn:disabled{opacity:0.45;cursor:not-allowed;}
+.btn-block{width:100%;justify-content:center;}
+.btn-sm{padding:7px 13px;font-size:0.85rem;}
+
+/* ---- Cards & layout helpers ---- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);padding:22px;box-shadow:var(--shadow-card);}
+.eyebrow{color:var(--teal-deep);font-weight:600;font-size:0.85rem;}
+.stack{display:flex;flex-direction:column;gap:16px;}
+.row{display:flex;gap:16px;flex-wrap:wrap;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+@media (max-width:640px){.grid-2{grid-template-columns:1fr;}}
+
+/* ---- Progress bar ---- */
+.progress-track{
+  height:10px;background:var(--slate-tint);border-radius:2px;overflow:hidden;display:flex;border:1px solid var(--line);
+}
+.progress-fill{height:100%;background:var(--teal);}
+.progress-row{display:flex;align-items:center;gap:12px;}
+.progress-row .progress-track{flex:1;}
+.progress-pct{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.9rem;min-width:38px;text-align:right;}
+
+/* ---- Status chip ---- */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:0.78rem;font-weight:600;border:1px solid transparent;}
+.chip-not-started{background:var(--slate-tint);color:var(--ink-soft);border-color:var(--line);}
+.chip-learning{background:#eaf1fb;color:#2a5a94;border-color:#c6d9f0;}
+.chip-pending{background:var(--amber-tint);color:#8a5510;border-color:#eccb92;}
+.chip-achieved{background:var(--teal-tint);color:var(--teal-deep);border-color:#b9e0d6;}
+.chip-needs-practice{background:var(--coral-tint);color:var(--coral);border-color:#e9bcac;}
+
+/* ---- Skill card ---- */
+.skill-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-md);
+  padding:16px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:10px;width:100%;
+}
+.skill-card:hover{border-color:var(--teal);}
+.skill-card .sk-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;}
+.skill-icon{width:34px;height:34px;border-radius:7px;background:var(--teal-tint);color:var(--teal-deep);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+
+/* ---- Course map ---- */
+.course-map{display:flex;flex-direction:column;gap:0;max-width:640px;margin:0 auto;}
+.map-node{
+  display:flex;gap:16px;align-items:flex-start;position:relative;padding-bottom:34px;
+}
+.map-node:last-child{padding-bottom:0;}
+.map-node::before{
+  content:'';position:absolute;left:23px;top:48px;bottom:0;width:2px;background:var(--line);
+}
+.map-node:last-child::before{display:none;}
+.map-dot{
+  width:48px;height:48px;border-radius:50%;background:#fff;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;
+  flex-shrink:0;z-index:1;font-size:1.05rem;color:var(--ink-soft);
+}
+.map-node.complete .map-dot{background:var(--teal);border-color:var(--teal-deep);color:#fff;}
+.map-node.current .map-dot{border-color:var(--teal);color:var(--teal-deep);box-shadow:0 0 0 4px var(--teal-tint);}
+.map-node.locked .map-dot{color:#aab3bb;}
+.map-body{flex:1;padding-top:6px;}
+.map-body h3{font-size:1.05rem;}
+.map-body .map-desc{color:var(--ink-soft);font-size:0.9rem;margin-top:2px;}
+
+/* ---- Badges ---- */
+.badge{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-md);
+  background:var(--amber-tint);border:1px solid #eccb92;min-width:180px;
+}
+.badge.locked{background:var(--slate-tint);border-color:var(--line);opacity:0.75;}
+.badge-icon{font-size:1.3rem;}
+.badge-name{font-weight:600;font-size:0.9rem;}
+.badge-sub{font-size:0.75rem;color:var(--ink-soft);}
+
+/* ---- Step list ---- */
+.step-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.step-list li{display:flex;gap:12px;align-items:flex-start;}
+.step-num{
+  width:26px;height:26px;border-radius:50%;background:var(--teal-tint);color:var(--teal-deep);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;
+  font-family:'Space Grotesk',sans-serif;
+}
+
+/* ---- Table (teacher) ---- */
+table.class-table{width:100%;border-collapse:collapse;font-size:0.88rem;}
+table.class-table th, table.class-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);}
+table.class-table th{font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--ink-soft);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em;}
+table.class-table tr:hover td{background:var(--slate-tint);cursor:pointer;}
+
+/* ---- Forms ---- */
+label{display:block;font-weight:600;font-size:0.88rem;margin-bottom:6px;}
+input[type=text],input[type=url],textarea,select{
+  width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);
+  font-family:inherit;font-size:0.95rem;background:#fff;color:var(--ink);
+}
+input:focus,textarea:focus,select:focus{border-color:var(--teal);}
+
+.banner{padding:14px 16px;border-radius:var(--radius-md);border:1px solid;display:flex;gap:10px;align-items:flex-start;}
+.banner-info{background:var(--purple-tint);border-color:#d1c4e9;color:var(--purple);}
+.banner-lock{background:var(--slate-tint);border-color:var(--line);color:var(--ink-soft);}
+
+.crumb{color:var(--ink-soft);font-size:0.88rem;margin-bottom:14px;}
+.crumb button{background:none;border:none;color:var(--teal-deep);cursor:pointer;font-size:0.88rem;padding:0;font-family:inherit;}
+.crumb button:hover{text-decoration:underline;}
+
+.divider{height:1px;background:var(--line);margin:22px 0;}
+
+.certificate{
+  background:#fff;border:2px solid var(--ink);border-radius:var(--radius-md);padding:50px 40px;text-align:center;
+  background-image:repeating-linear-gradient(135deg, rgba(103,58,183,0.03) 0px, rgba(103,58,183,0.03) 2px, transparent 2px, transparent 14px);
+}
+.certificate h1{font-size:2rem;margin-bottom:6px;}
+.certificate .cert-name{font-size:1.7rem;color:var(--purple);margin:20px 0 6px;font-family:'Space Grotesk',sans-serif;font-weight:700;}
+
+@media print{
+  .topbar,.crumb,.no-print{display:none !important;}
+  body{background:#fff;}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<div id="app"></div>
+<script>
+/* =========================================================================
+   FORMS & SHEETS MASTERCLASS — Course Data
+   ========================================================================= */
+const COURSE = {
+  levels: [
+    {
+      id: 1,
+      title: "Level 1: Google Forms Masterclass",
+      short: "Google Forms",
+      icon: "📋",
+      badge: "Form Architect",
+      badgeIcon: "🏆",
+      intro: "Learn how to build clear 5-question numerical surveys, choose the right question settings, and share your form links with your class.",
+      sections: [
+        { 
+          name: "Building Forms & Question Types", 
+          skills: [
+            { 
+              id: "f1-create", 
+              title: "Create a Google Form & Title It", 
+              learn: "A Google Form lets you collect data from dozens of people instantly. Every form needs a clear title and instructions.",
+              watch: [
+                "Open Google Drive and click + New (top left)",
+                "Hover over 'Google Forms' and click Blank form",
+                "Click 'Untitled form' at the top left and type your survey title",
+                "Add a brief description under the title explaining what your survey measures"
+              ],
+              tryIt: "Create a blank Google Form named 'Daily Screen Time Survey'.",
+              demonstrateTask: "Paste the title and short description you created." 
+            },
+            { 
+              id: "f1-questions", 
+              title: "Add Numerical Question Types", 
+              learn: "To use math formulas later in Google Sheets, your survey questions MUST ask for numbers (Linear Scales or Number Answers).",
+              watch: [
+                "Click on the first question box to edit it",
+                "Click the question type dropdown on the right",
+                "Choose 'Linear scale' (1 to 10) for ratings/opinions",
+                "Click + on the floating side toolbar to add a new question",
+                "Choose 'Short answer' for questions asking for exact numbers (e.g., 'How many hours?')"
+              ],
+              tryIt: "Add 1 Linear Scale question (1–10) and 1 Short Answer question to your form.",
+              demonstrateTask: "List your two question titles and which type you assigned to each." 
+            },
+            { 
+              id: "f1-required", 
+              title: "Make Questions Required", 
+              learn: "If respondents skip questions, your spreadsheet will have blank spots that ruin your math averages.",
+              watch: [
+                "Click on any question box to select it",
+                "Look at the bottom right corner of the question card",
+                "Toggle the 'Required' switch to ON (it will turn purple)",
+                "Repeat this for all 5 questions so nobody can skip them"
+              ],
+              tryIt: "Toggle the Required switch to ON for all questions in your form.",
+              demonstrateTask: "Confirm all 5 questions are set to Required." 
+            }
+          ]
+        },
+        { 
+          name: "Sharing Forms & Collecting Responses", 
+          skills: [
+            { 
+              id: "f1-share-link", 
+              title: "Share Your Form via Shortened Link", 
+              learn: "To collect survey answers, you must share the RESPONDENT link, not the editor link from your browser bar!",
+              watch: [
+                "Click the purple 'Send' button in the top right corner",
+                "Click the Link icon (looks like a paperclip) next to the envelope",
+                "Check the box that says 'Shorten URL'",
+                "Click the blue 'Copy' button (or press Ctrl+C)",
+                "Paste the link into Google Classroom, an email, or your assignment submission box"
+              ],
+              tryIt: "Copy your shortened Form link using the Send button.",
+              demonstrateTask: "Paste your shortened Google Form link below (it should start with forms.gle)." 
+            },
+            { 
+              id: "f1-share-email", 
+              title: "Share Form via Direct Email", 
+              learn: "You can also email your form directly to specific classmates or your teacher from inside Google Forms.",
+              watch: [
+                "Click the purple 'Send' button (top right)",
+                "Under 'Send via', stay on the Envelope (Email) tab",
+                "In the 'To' field, type your classmate's or teacher's school email address",
+                "Check the box 'Include form in email' if you want them to answer directly in Gmail",
+                "Click 'Send'"
+              ],
+              tryIt: "Send a test email invite of your form to your teacher's email address.",
+              demonstrateTask: "Type the email address you sent the form invite to." 
+            },
+            { 
+              id: "f1-access-settings", 
+              title: "Adjust Form Access Settings", 
+              learn: "School accounts default to restricting forms to your school domain. You must know how to check these access controls.",
+              watch: [
+                "Click the 'Settings' tab at the top center of your Form",
+                "Click the dropdown arrow next to 'Responses'",
+                "Toggle 'Restrict to users in [School District]' ON or OFF depending on who needs to take it",
+                "Toggle 'Limit to 1 response' if you want to prevent people from voting twice"
+              ],
+              tryIt: "Open Form Settings and inspect your domain response limits.",
+              demonstrateTask: "State whether your form is restricted to school domain users or public." 
+            },
+            { 
+              id: "f1-view-responses", 
+              title: "View Summary Charts & Responses", 
+              learn: "Google Forms automatically builds instant pie charts and bar graphs as survey submissions arrive.",
+              watch: [
+                "Click the 'Responses' tab at the top of your Form",
+                "View the total response counter at the top",
+                "Scroll down to see automated visual graphs for each question",
+                "Click 'Individual' to inspect answers submitted by specific people"
+              ],
+              tryIt: "Check your Responses tab after getting at least 5 survey submissions.",
+              demonstrateTask: "Report how many total responses your form has collected so far." 
+            }
+          ]
+        }
+      ],
+      challenge: {
+        title: "The 5-Question All-Number Survey Sprint",
+        description: "Create and distribute a 5-question numerical survey to your classmates during the Survey Swarm.",
+        tasks: [
+          "Create a Google Form with a title and description",
+          "Add 5 questions requiring numerical or rating scale answers",
+          "Set all 5 questions to Required",
+          "Copy the shortened share link via the Send button",
+          "Share the link with at least 5 classmates and get 5 completed responses"
+        ]
+      }
+    },
+    {
+      id: 2,
+      title: "Level 2: Google Sheets & Form Data Analytics",
+      short: "Google Sheets",
+      icon: "📊",
+      badge: "Data Analyst",
+      badgeIcon: "🏆",
+      intro: "Export your survey responses into Google Sheets, apply 5 essential math functions, format headers, and generate custom charts.",
+      sections: [
+        { 
+          name: "Exporting & Formatting Sheets", 
+          skills: [
+            { 
+              id: "s2-export", 
+              title: "Link Form Responses to Google Sheets", 
+              learn: "Connecting your Form to Sheets streams all survey responses into a live spreadsheet automatically.",
+              watch: [
+                "Open your Google Form and click the 'Responses' tab",
+                "Click the green 'Link to Sheets' icon in the top right corner",
+                "Select 'Create a new spreadsheet'",
+                "Click 'Create' — Google Sheets will open automatically in a new tab"
+              ],
+              tryIt: "Link your Form responses to a new Google Sheet.",
+              demonstrateTask: "Paste the link to your connected Google Sheet." 
+            },
+            { 
+              id: "s2-format-headers", 
+              title: "Format Headers & Auto-Fit Columns", 
+              learn: "Making Row 1 bold with background color fills keeps headers distinct from student response data.",
+              watch: [
+                "Click row number '1' to highlight all header cells across the top",
+                "Click Bold (Ctrl+B) and choose a Fill Color (paint bucket icon)",
+                "Select all columns (Click A, hold Shift, click your last column)",
+                "Double-click the line between any column header letter to auto-fit cell widths"
+              ],
+              tryIt: "Format Row 1 with bold text, background fill color, and auto-fit all column widths.",
+              demonstrateTask: "Confirm what fill color you chose for your header row." 
+            }
+          ]
+        },
+        { 
+          name: "Spreadsheet Formulas & Visualizations", 
+          skills: [
+            { 
+              id: "s2-count", 
+              title: "Use the =COUNT() Function", 
+              learn: "=COUNT() automatically tallies how many numerical survey submissions exist in a column.",
+              watch: [
+                "Click an empty cell below your data rows (e.g., cell A10)",
+                "Type 'Total Responses' in A10",
+                "In cell B10, type =COUNT(B2:B9) and press Enter",
+                "Sheets will display the total number of numeric entries"
+              ],
+              tryIt: "Calculate total responses using =COUNT() for one of your question columns.",
+              demonstrateTask: "Paste the exact =COUNT() formula you wrote and its result." 
+            },
+            { 
+              id: "s2-average", 
+              title: "Use the =AVERAGE() Function", 
+              learn: "=AVERAGE() calculates the statistical mean score for rating scales or hour estimates.",
+              watch: [
+                "Click an empty cell (e.g., cell A11) and label it 'Average Score'",
+                "In cell B11, type =AVERAGE(B2:B9) and press Enter",
+                "Check that the calculated mean matches expectations"
+              ],
+              tryIt: "Calculate the average score for your rating question using =AVERAGE().",
+              demonstrateTask: "Paste the =AVERAGE() formula and the calculated mean." 
+            },
+            { 
+              id: "s2-minmax", 
+              title: "Use =MIN() and =MAX() Functions", 
+              learn: "=MIN() finds the lowest score submitted, while =MAX() identifies the highest.",
+              watch: [
+                "Label cell A12 'Highest Value' and cell A13 'Lowest Value'",
+                "In cell B12, type =MAX(B2:B9)",
+                "In cell B13, type =MIN(B2:B9)"
+              ],
+              tryIt: "Find the maximum and minimum values in your dataset using =MAX() and =MIN().",
+              demonstrateTask: "Report your highest and lowest values." 
+            },
+            { 
+              id: "s2-sum", 
+              title: "Use the =SUM() Function", 
+              learn: "=SUM() calculates the grand total when adding up hours, counts, or points across all respondents.",
+              watch: [
+                "Label cell A14 'Grand Total'",
+                "In cell B14, type =SUM(B2:B9) and press Enter"
+              ],
+              tryIt: "Calculate the sum total of a numerical column using =SUM().",
+              demonstrateTask: "Paste your =SUM() formula result." 
+            },
+            { 
+              id: "s2-chart", 
+              title: "Create & Customize a Bar Chart", 
+              learn: "A chart visualizes numerical trends clearly for presentations and reports.",
+              watch: [
+                "Click and drag to select your question header and numerical data (e.g., B1:B9)",
+                "Click Insert > Chart from the top menu",
+                "In the Chart Editor panel on the right, select 'Column Chart' or 'Bar Chart'",
+                "Customize the chart title and drag the chart beneath your summary formulas"
+              ],
+              tryIt: "Insert a Column or Bar Chart into your spreadsheet.",
+              demonstrateTask: "Confirm what type of chart you built and its custom title." 
+            }
+          ]
+        }
+      ],
+      challenge: {
+        title: "Spreadsheet Analytics & 5-Function Report",
+        description: "Export Form data to Sheets, construct a summary block with 5 mandatory formulas, and generate a chart.",
+        tasks: [
+          "Export Form responses to Google Sheets",
+          "Format Row 1 headers (Bold + Fill Color + Auto-fit)",
+          "Create a summary block using =COUNT(), =AVERAGE(), =MAX(), =MIN(), and =SUM()",
+          "Insert 1 Bar or Column Chart visualizing your data",
+          "Submit your Google Sheet link to your teacher"
+        ]
+      }
+    }
+  ]
+};
+
+/* =========================================================================
+   APP STATE & RENDER ENGINE
+   ========================================================================= */
+const STATE = {
+  role: 'student', // 'student' | 'teacher'
+  view: 'map',     // 'map' | 'level' | 'skill' | 'badges' | 'teacher' | 'cert'
+  activeLevelId: null,
+  activeSkillId: null,
+  progress: JSON.parse(localStorage.getItem('fs_ready_progress') || '{}'),
+  responses: JSON.parse(localStorage.getItem('fs_ready_responses') || '{}')
+};
+
+function saveState() {
+  localStorage.setItem('fs_ready_progress', JSON.stringify(STATE.progress));
+  localStorage.setItem('fs_ready_responses', JSON.stringify(STATE.responses));
+}
+
+function setSkillStatus(skillId, status, responseText) {
+  STATE.progress[skillId] = status;
+  if (responseText !== undefined) {
+    STATE.responses[skillId] = responseText;
+  }
+  saveState();
+  render();
+}
+
+function getAllSkills() {
+  const skills = [];
+  COURSE.levels.forEach(lvl => {
+    lvl.sections.forEach(sec => {
+      sec.skills.forEach(sk => {
+        skills.push({ ...sk, levelId: lvl.id, levelTitle: lvl.title, sectionName: sec.name });
+      });
+    });
+  });
+  return skills;
+}
+
+function calculateProgress(level) {
+  let total = 0;
+  let achieved = 0;
+  level.sections.forEach(sec => {
+    sec.skills.forEach(sk => {
+      total++;
+      if (STATE.progress[sk.id] === 'achieved') achieved++;
+    });
+  });
+  return { total, achieved, pct: total ? Math.round((achieved / total) * 100) : 0 };
+}
+
+function calculateTotalProgress() {
+  const skills = getAllSkills();
+  const total = skills.length;
+  const achieved = skills.filter(s => STATE.progress[s.id] === 'achieved').length;
+  return { total, achieved, pct: total ? Math.round((achieved / total) * 100) : 0 };
+}
+
+/* ---- Render Engine ---- */
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <header class="topbar">
+      <div class="brand" onclick="navTo('map')">
+        <div class="brand-mark">📋</div>
+        <span>Forms & Sheets Studio</span>
+      </div>
+      <nav class="topnav">
+        <button class="${STATE.view === 'map' ? 'active' : ''}" onclick="navTo('map')">Course Map</button>
+        <button class="${STATE.view === 'badges' ? 'active' : ''}" onclick="navTo('badges')">Badges</button>
+        <button class="${STATE.view === 'cert' ? 'active' : ''}" onclick="navTo('cert')">Certificate</button>
+      </nav>
+      <div class="role-pill">
+        <button class="${STATE.role === 'student' ? 'active' : ''}" onclick="setRole('student')">Student</button>
+        <button class="${STATE.role === 'teacher' ? 'active' : ''}" onclick="setRole('teacher')">Teacher</button>
+      </div>
+    </header>
+
+    <main id="main">
+      ${STATE.role === 'teacher' ? renderTeacherView() : renderStudentView()}
+    </main>
+  `;
+}
+
+function navTo(view, levelId = null, skillId = null) {
+  STATE.view = view;
+  if (levelId) STATE.activeLevelId = levelId;
+  if (skillId) STATE.activeSkillId = skillId;
+  render();
+  window.scrollTo(0,0);
+}
+
+function setRole(role) {
+  STATE.role = role;
+  if (role === 'teacher') STATE.view = 'teacher';
+  else if (STATE.view === 'teacher') STATE.view = 'map';
+  render();
+}
+
+function renderStudentView() {
+  switch (STATE.view) {
+    case 'map': return renderCourseMap();
+    case 'level': return renderLevelView();
+    case 'skill': return renderSkillView();
+    case 'badges': return renderBadgesView();
+    case 'cert': return renderCertificateView();
+    default: return renderCourseMap();
+  }
+}
+
+function renderCourseMap() {
+  const overall = calculateTotalProgress();
+  return `
+    <div class="stack">
+      <div class="card" style="background:var(--purple-tint); border-color:#d1c4e9;">
+        <span class="eyebrow" style="color:var(--purple);">STUDENT DASHBOARD</span>
+        <h1 style="margin-top:4px;">Google Forms & Sheets Skills Course</h1>
+        <p style="margin-top:6px; color:var(--ink-soft);">Master survey creation, sharing form links, spreadsheet formulas, and data charts.</p>
+        <div class="progress-row" style="margin-top:14px;">
+          <div class="progress-track"><div class="progress-fill" style="width:${overall.pct}%; background:var(--purple);"></div></div>
+          <span class="progress-pct">${overall.pct}%</span>
+        </div>
+      </div>
+
+      <div class="course-map" style="margin-top:20px;">
+        ${COURSE.levels.map((lvl) => {
+          const prog = calculateProgress(lvl);
+          const isComplete = prog.pct === 100;
+          return `
+            <div class="map-node ${isComplete ? 'complete' : 'current'}">
+              <div class="map-dot">${isComplete ? '✓' : lvl.id}</div>
+              <div class="map-body card" style="width:100%;">
+                <span class="eyebrow">LEVEL ${lvl.id}</span>
+                <h3>${lvl.title}</h3>
+                <p class="map-desc">${lvl.intro}</p>
+                <div class="progress-row" style="margin:10px 0;">
+                  <div class="progress-track"><div class="progress-fill" style="width:${prog.pct}%;"></div></div>
+                  <span class="progress-pct">${prog.pct}%</span>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="navTo('level', ${lvl.id})">Open Level ${lvl.id}</button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderLevelView() {
+  const lvl = COURSE.levels.find(l => l.id === STATE.activeLevelId) || COURSE.levels[0];
+  const prog = calculateProgress(lvl);
+
+  return `
+    <div class="stack">
+      <div class="crumb">
+        <button onclick="navTo('map')">← Course Map</button> / Level ${lvl.id}
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">LEVEL ${lvl.id}</span>
+        <h1>${lvl.title}</h1>
+        <p style="margin-top:6px; color:var(--ink-soft);">${lvl.intro}</p>
+        <div class="progress-row" style="margin-top:14px;">
+          <div class="progress-track"><div class="progress-fill" style="width:${prog.pct}%;"></div></div>
+          <span class="progress-pct">${prog.pct}%</span>
+        </div>
+      </div>
+
+      ${lvl.sections.map(sec => `
+        <div class="stack" style="margin-top:12px;">
+          <h2>${sec.name}</h2>
+          <div class="grid-cards">
+            ${sec.skills.map(sk => {
+              const status = STATE.progress[sk.id] || 'not-started';
+              const chipClasses = {
+                'not-started': 'chip-not-started',
+                'learning': 'chip-learning',
+                'pending': 'chip-pending',
+                'achieved': 'chip-achieved',
+                'needs-practice': 'chip-needs-practice'
+              };
+              const statusLabel = {
+                'not-started': 'Not Started',
+                'learning': 'In Progress',
+                'pending': 'Pending Review',
+                'achieved': 'Achieved ✓',
+                'needs-practice': 'Needs Practice'
+              };
+              return `
+                <button class="skill-card" onclick="navTo('skill', ${lvl.id}, '${sk.id}')">
+                  <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                    <div class="skill-icon">${lvl.icon}</div>
+                    <span class="chip ${chipClasses[status]}">${statusLabel[status]}</span>
+                  </div>
+                  <div class="sk-title">${sk.title}</div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('')}
+
+      <div class="card" style="border-color:var(--amber); margin-top:20px; background:var(--amber-tint);">
+        <h2>🏆 Level ${lvl.id} Challenge: ${lvl.challenge.title}</h2>
+        <p style="color:var(--ink-soft); margin-top:4px;">${lvl.challenge.description}</p>
+        <ul class="step-list" style="margin-top:12px;">
+          ${lvl.challenge.tasks.map((t, idx) => `
+            <li>
+              <span class="step-num">${idx + 1}</span>
+              <div>${t}</div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+function renderSkillView() {
+  const allSkills = getAllSkills();
+  const sk = allSkills.find(s => s.id === STATE.activeSkillId) || allSkills[0];
+  const savedResponse = STATE.responses[sk.id] || '';
+
+  return `
+    <div class="stack">
+      <div class="crumb">
+        <button onclick="navTo('map')">Course Map</button> / 
+        <button onclick="navTo('level', ${sk.levelId})">Level ${sk.levelId}</button> / 
+        ${sk.title}
+      </div>
+
+      <div class="card">
+        <span class="eyebrow">${sk.sectionName.toUpperCase()}</span>
+        <h1 style="margin-top:4px;">${sk.title}</h1>
+        <p style="margin-top:10px; font-size:1.05rem; color:var(--ink-soft);">${sk.learn}</p>
+        
+        <div class="divider"></div>
+
+        <h3>👁️ Watch & Learn Steps</h3>
+        <ul class="step-list" style="margin-top:12px;">
+          ${sk.watch.map((step, idx) => `
+            <li>
+              <span class="step-num">${idx + 1}</span>
+              <div style="padding-top:2px;">${step}</div>
+            </li>
+          `).join('')}
+        </ul>
+
+        <div class="divider"></div>
+
+        <h3>🛠️ Try It</h3>
+        <p style="color:var(--ink-soft); margin-top:4px;">${sk.tryIt}</p>
+
+        <div class="divider"></div>
+
+        <h3>✅ Demonstrate Mastery</h3>
+        <p style="color:var(--ink-soft); margin-top:4px;">${sk.demonstrateTask}</p>
+        
+        <div style="margin-top:12px;">
+          <label for="taskInput">Your Submission / Response:</label>
+          <textarea id="taskInput" rows="3" placeholder="Paste form link, formula, or response here...">${savedResponse}</textarea>
+        </div>
+
+        <div class="row" style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="submitSkill('${sk.id}')">Submit for Review</button>
+          <button class="btn btn-secondary" onclick="markSelfAchieved('${sk.id}')">Mark as Achieved ✓</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function submitSkill(skillId) {
+  const val = document.getElementById('taskInput').value.trim();
+  if(!val) { alert('Please enter a response before submitting.'); return; }
+  setSkillStatus(skillId, 'pending', val);
+  alert('Task submitted for teacher review!');
+}
+
+function markSelfAchieved(skillId) {
+  const val = document.getElementById('taskInput').value.trim();
+  setSkillStatus(skillId, 'achieved', val);
+}
+
+function renderBadgesView() {
+  return `
+    <div class="stack">
+      <h1>Your Badges</h1>
+      <p style="color:var(--ink-soft);">Complete level challenges and section milestones to unlock badges.</p>
+      
+      <div class="row" style="margin-top:12px;">
+        ${COURSE.levels.map(lvl => {
+          const prog = calculateProgress(lvl);
+          const unlocked = prog.pct === 100;
+          return `
+            <div class="badge ${unlocked ? '' : 'locked'}">
+              <span class="badge-icon">${lvl.badgeIcon}</span>
+              <div>
+                <div class="badge-name">${lvl.badge}</div>
+                <div class="badge-sub">Level ${lvl.id} ${unlocked ? 'Unlocked' : 'Locked'}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderCertificateView() {
+  const overall = calculateTotalProgress();
+  const isComplete = overall.pct === 100;
+
+  return `
+    <div class="stack">
+      <div class="no-print row" style="justify-content:space-between; align-items:center;">
+        <h1>Course Certificate</h1>
+        <button class="btn btn-secondary" onclick="window.print()" ${!isComplete ? 'disabled' : ''}>🖨️ Print Certificate</button>
+      </div>
+
+      ${!isComplete ? `
+        <div class="banner banner-lock">
+          🔒 Complete all course skills (100%) to unlock your official course certificate. Current Progress: ${overall.pct}%
+        </div>
+      ` : ''}
+
+      <div class="certificate" style="margin-top:16px;">
+        <span class="eyebrow" style="letter-spacing:0.1em; color:var(--purple);">OFFICIAL CERTIFICATE OF COMPLETION</span>
+        <h1>Google Forms & Sheets Studio</h1>
+        <p>This certifies that</p>
+        <div class="cert-name">Student Name</div>
+        <p>has successfully demonstrated mastery in Google Forms survey creation, link sharing, and Google Sheets analytics.</p>
+        <div style="margin-top:30px; font-weight:600; color:var(--purple);">Verified Grade 8 Data Sprint Skills</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderTeacherView() {
+  const allSkills = getAllSkills();
+  return `
+    <div class="stack">
+      <div class="card">
+        <span class="eyebrow">TEACHER DASHBOARD</span>
+        <h1 style="margin-top:4px;">Class Mastery Tracker</h1>
+        <p style="color:var(--ink-soft); margin-top:4px;">Review student form links, formula submissions, and project progress.</p>
+      </div>
+
+      <div class="card">
+        <h3>Submissions Pending Review</h3>
+        <table class="class-table" style="margin-top:12px;">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Student Response</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${allSkills.map(sk => {
+              const status = STATE.progress[sk.id] || 'not-started';
+              const resp = STATE.responses[sk.id] || '—';
+              return `
+                <tr>
+                  <td><strong>${sk.title}</strong></td>
+                  <td style="max-width:300px; word-break:break-all;">${resp}</td>
+                  <td><span class="chip ${status === 'achieved' ? 'chip-achieved' : status === 'pending' ? 'chip-pending' : 'chip-not-started'}">${status}</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-secondary" onclick="setSkillStatus('${sk.id}', 'achieved')">Approve</button>
+                    <button class="btn btn-sm btn-danger" onclick="setSkillStatus('${sk.id}', 'needs-practice')">Needs Work</button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// Initial render call
+render();
+</script>
+</body>
+</html>
